@@ -1,0 +1,25 @@
+{
+  "name": "the-blackhole",
+  "version": "1.0.0",
+  "description": "Endless content",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rtw590/the-blackhole.git"
+  },
+  "author": "Rob",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rtw590/the-blackhole/issues"
+  },
+  "homepage": "https://github.com/rtw590/the-blackhole#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "express-handlebars": "^3.0.0",
+    "mongoose": "^5.0.13"
+  }
+}

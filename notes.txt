@@ -1,0 +1,3 @@
+db name = blackhole
+
+collection name = posts
