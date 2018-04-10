@@ -70,17 +70,18 @@ app.post('/posts/add', function(req, res) {
 
 // Add POST route for commments
 app.post('/posts/comment/:id', function(req, res) {
-    console.log('Comment test');
-    // post.body = req.body.body;
+    Post.findById(req.params.id, function (err, post) {
+        post.comments.push({title: 'This needs to be User', body: req.body.body});
+        post.save(function(err) {
+            if (err) {
+                console.log(err);
+                return;
+            } else {
+                res.redirect('/posts/'+req.params.id);
+            }
+        });
+    });
 
-    // post.save(function(err) {
-    //     if (err) {
-    //         console.log(err);
-    //         return;
-    //     } else {
-    //         res.redirect('/');
-    //     }
-    // });
 });
 
 // Get Single Post
@@ -89,6 +90,32 @@ app.get('/posts/:id', function(req, res) {
         res.render('post', {
             post: post
         });
+    });
+});
+
+// Edit Single Post
+app.get('/posts/edit/:id', function(req, res) {
+    Post.findById(req.params.id, function (err, post) {
+        res.render('edit_post', {
+            post: post
+        });
+    });
+});
+
+//  POST to update posts
+app.post('/posts/edit/:id', function(req, res) {
+    let article = {};
+    post.title = req.body.title;
+    post.author = req.body.author;
+    post.body = req.body.body;
+
+    post.save(function(err) {
+        if (err) {
+            console.log(err);
+            return;
+        } else {
+            res.redirect('/');
+        }
     });
 });
 
