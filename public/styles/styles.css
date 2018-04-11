@@ -1,0 +1,37 @@
+a, h1, h2, h3, h4, h5, li, ul, p, label {
+    color: white;
+}
+
+.boldText {
+    font-weight: 700px;
+}
+
+a:hover {
+    color: rgb(255, 196, 0);
+    text-decoration: none;
+}
+
+body {
+    background-color: black;
+}
+
+.homeList a {
+    font-size: 30px;
+    font-weight: 700;
+}
+
+hr {
+    color: white;
+}
+
+.divider {
+    height: 2px;
+    width: 100%;
+    background-color: rgb(255, 196, 0);
+}
+
+.commentsList {
+    list-style: none;
+    padding: 0px;
+}
+

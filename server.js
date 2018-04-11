@@ -27,6 +27,9 @@ app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
+// Set Static Folder
+app.use(express.static('public'))
+
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 
@@ -104,19 +107,13 @@ app.get('/posts/edit/:id', function(req, res) {
 
 //  POST to update posts
 app.post('/posts/edit/:id', function(req, res) {
-    let article = {};
-    post.title = req.body.title;
-    post.author = req.body.author;
-    post.body = req.body.body;
-
-    post.save(function(err) {
-        if (err) {
-            console.log(err);
-            return;
-        } else {
-            res.redirect('/');
-        }
+    Post.findById(req.params.id, function (err, post) {
+        post.title = req.body.title;
+        post.author = req.body.author;
+        post.body = req.body.body;
+        post.save();
     });
+    res.redirect('/posts/'+req.params.id);
 });
 
 app.set('port', (process.env.PORT || 8000));

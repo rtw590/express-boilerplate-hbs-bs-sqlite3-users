@@ -1,11 +1,13 @@
  <div class="container">
     
 
-
-    {{# each posts }}
-        <a href="/posts/{{ this._id }}"+>{{ this.title }}</a>
-        <br>
-    {{/each}}
+    <div class="homeList">
+        {{# each posts }}
+            <a href="/posts/{{ this._id }}"+>{{ this.title }}</a>
+            <br>
+            <div class="divider"></div>
+        {{/each}}
+    </div>
 
 
 </div>
