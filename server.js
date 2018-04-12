@@ -116,6 +116,17 @@ app.post('/posts/edit/:id', function(req, res) {
     res.redirect('/posts/'+req.params.id);
 });
 
+// Delete Post
+app.delete('/posts/:id', function(req, res) {
+    let query = {_id:req.params.id}
+    Post.remove(query, function(err) {
+        if(err) {
+            console.log(err)
+        }
+        res.send('Success');
+    });
+});
+
 app.set('port', (process.env.PORT || 8000));
 
 app.listen(app.get('port'), function () {
