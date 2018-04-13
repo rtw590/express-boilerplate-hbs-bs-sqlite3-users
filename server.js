@@ -91,20 +91,34 @@ app.get('/posts/add', function(req, res) {
 
 // Add POST route for posts
 app.post('/posts/add', function(req, res) {
-    let post = new Post();
-    post.title = req.body.title;
-    post.author = req.body.author;
-    post.body = req.body.body;
+    req.checkBody('title', 'Title is required').notEmpty();
+    req.checkBody('author', 'Author is required').notEmpty();
+    req.checkBody('body', 'Body is required').notEmpty();
 
-    post.save(function(err) {
-        if (err) {
-            console.log(err);
-            return;
-        } else {
-            req.flash('success', 'Post Added');
-            res.redirect('/');
-        }
-    });
+    // get errors
+
+    let errors = req.validationErrors();
+
+    if(errors) {
+        res.render('add_post', {
+            errors:errors
+        });
+    } else {
+        let post = new Post();
+        post.title = req.body.title;
+        post.author = req.body.author;
+        post.body = req.body.body;
+
+        post.save(function(err) {
+            if (err) {
+                console.log(err);
+                return;
+            } else {
+                req.flash('success', 'Post Added');
+                res.redirect('/');
+            }
+        });
+    }
 });
 
 // Add POST route for commments

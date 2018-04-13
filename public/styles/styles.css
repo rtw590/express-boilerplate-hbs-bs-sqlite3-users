@@ -37,12 +37,12 @@ hr {
 
 .messages {
     width: 90%;
-    background-color: rgb(255, 196, 0);
+    background-color: rgb(255, 225, 126);
     color: black;
     list-style: none;
     margin: 0 auto;
     border-radius: 5px;
-    border: 2px solid rgb(184, 141, 0);
+    border: 2px solid rgb(255, 196, 0);
     height: auto;
 }
 
@@ -50,10 +50,11 @@ hr {
     list-style: none;
     margin: 0 auto;
     font-size: 22px;
-    font-weight: 700px;
+    font-weight: 500;
     text-align: left;
     padding: 0px;
     color: black;
     margin-top: 8px;
+    text-transform: uppercase;
 }
 

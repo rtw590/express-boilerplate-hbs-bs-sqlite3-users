@@ -19,11 +19,13 @@
                 {{{messages}}} 
         </div>
     {{/if}}
-    {{!-- {{#if errors}} 
+    {{#if errors}} 
         {{#each errors}}
-            {{msg}}
+            <div class="container messages mb-2">
+                {{msg}}
+            </div>
         {{/each}} 
-    {{/if}} --}}
+    {{/if}}
 
     {{{body}}}
     <script
