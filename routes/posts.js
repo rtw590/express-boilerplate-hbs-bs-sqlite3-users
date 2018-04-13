@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 //Bring in Post Model
-let Post = require('../models/post')
+let Post = require('../models/post');
 
 
 // Add Post Route
