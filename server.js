@@ -84,99 +84,12 @@ app.get('/', function(req, res) {
     });
 });
 
-// Add Post Route
-app.get('/posts/add', function(req, res) {
-    res.render('add_post');
-});
+// Route Files
+let posts = require('./routes/posts');
+app.use('/posts', posts);
 
-// Add POST route for posts
-app.post('/posts/add', function(req, res) {
-    req.checkBody('title', 'Title is required').notEmpty();
-    req.checkBody('author', 'Author is required').notEmpty();
-    req.checkBody('body', 'Body is required').notEmpty();
-
-    // get errors
-
-    let errors = req.validationErrors();
-
-    if(errors) {
-        res.render('add_post', {
-            errors:errors
-        });
-    } else {
-        let post = new Post();
-        post.title = req.body.title;
-        post.author = req.body.author;
-        post.body = req.body.body;
-
-        post.save(function(err) {
-            if (err) {
-                console.log(err);
-                return;
-            } else {
-                req.flash('success', 'Post Added');
-                res.redirect('/');
-            }
-        });
-    }
-});
-
-// Add POST route for commments
-app.post('/posts/comment/:id', function(req, res) {
-    Post.findById(req.params.id, function (err, post) {
-        post.comments.push({title: 'This needs to be User', body: req.body.body});
-        post.save(function(err) {
-            if (err) {
-                console.log(err);
-                return;
-            } else {
-                res.redirect('/posts/'+req.params.id);
-            }
-        });
-    });
-
-});
-
-// Get Single Post
-app.get('/posts/:id', function(req, res) {
-    Post.findById(req.params.id, function (err, post) {
-        res.render('post', {
-            post: post
-        });
-    });
-});
-
-// Edit Single Post
-app.get('/posts/edit/:id', function(req, res) {
-    Post.findById(req.params.id, function (err, post) {
-        res.render('edit_post', {
-            post: post
-        });
-    });
-});
-
-//  POST to update posts
-app.post('/posts/edit/:id', function(req, res) {
-    Post.findById(req.params.id, function (err, post) {
-        post.title = req.body.title;
-        post.author = req.body.author;
-        post.body = req.body.body;
-        post.save();
-    });
-    req.flash('success', 'Post Updated');
-    res.redirect('/posts/'+req.params.id);
-});
-
-// Delete Post
-app.delete('/posts/:id', function(req, res) {
-    let query = {_id:req.params.id}
-    Post.remove(query, function(err) {
-        if(err) {
-            console.log(err)
-        }
-        res.send('Success');
-    });
-});
+// var tutorials = require('./routes/tutorials');
+// app.use('/tutorials', tutorials);
 
 app.set('port', (process.env.PORT || 8000));
 
