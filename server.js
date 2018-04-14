@@ -6,8 +6,10 @@ const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const flash = require('connect-flash');
 const session = require('express-session');
+const passport = require('passport');
+const config = require('./config/database');
 
-mongoose.connect('mongodb://localhost/blackhole');
+mongoose.connect(config.database);
 let db = mongoose.connection;
 
 // Check Connection
@@ -64,6 +66,17 @@ app.use(expressValidator({
       };
     }
 }));
+
+// Passport config
+require('./config/passport')(passport);
+// Passport Middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.get('*', function(req, res, next) {
+    res.locals.user = req.user || null;
+    next();
+});
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
