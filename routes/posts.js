@@ -3,17 +3,18 @@ const router = express.Router();
 
 //Bring in Post Model
 let Post = require('../models/post');
-
+// Bring in User Model
+let User = require('../models/user');
 
 // Add Post Route
-router.get('/add', function(req, res) {
+router.get('/add', ensureAuthenticated, function(req, res) {
     res.render('add_post');
 });
 
 // Add POST route for posts
 router.post('/add', function(req, res) {
     req.checkBody('title', 'Title is required').notEmpty();
-    req.checkBody('author', 'Author is required').notEmpty();
+    // req.checkBody('author', 'Author is required').notEmpty();
     req.checkBody('body', 'Body is required').notEmpty();
 
     // get errors
@@ -27,7 +28,7 @@ router.post('/add', function(req, res) {
     } else {
         let post = new Post();
         post.title = req.body.title;
-        post.author = req.body.author;
+        post.author = req.user._id;
         post.body = req.body.body;
 
         post.save(function(err) {
@@ -61,17 +62,59 @@ router.post('/comment/:id', function(req, res) {
 // Get Single Post
 router.get('/:id', function(req, res) {
     Post.findById(req.params.id, function (err, post) {
-        res.render('post', {
-            post: post
+        User.findById(post.author, function(err, user){
+            let postedBy = false
+            if(req.user != undefined) {
+                if(req.user._id.toString() === user._id.toString()){
+                    postedBy = true
+                } 
+            }
+            res.render('post', {
+                post: post,
+                author: user.username,
+                postedBy: postedBy
+            });
         });
     });
 });
 
-// Edit Single Post
-router.get('/edit/:id', function(req, res) {
+// Get Single Post - Also keep safe while mess with above
+// router.get('/:id', function(req, res) {
+//     Post.findById(req.params.id, function (err, post) {
+//         User.findById(post.author, function(err, user){
+//             let postedBy = false
+//             if(req.user._id.toString() === user._id.toString()){
+//                 postedBy = true
+//             } 
+//             res.render('post', {
+//                 post: post,
+//                 author: user.username,
+//                 postedBy: postedBy
+//             });
+//         });
+//     });
+// });
+
+// Get Single Post -- Keep safe while I play with above
+// router.get('/:id', function(req, res) {
+//     Post.findById(req.params.id, function (err, post) {
+//         User.findById(post.author, function(err, user){
+//             res.render('post', {
+//                 post: post,
+//                 author: user.username
+//             });
+//         });
+//     });
+// });
+
+// Edit Single Post --- TODO This route may need some work
+router.get('/edit/:id', ensureAuthenticated, function(req, res) {
     Post.findById(req.params.id, function (err, post) {
-        res.render('edit_post', {
-            post: post
+        User.findById(post.author, function(err, user){
+            res.render('edit_post', {
+                post: post,
+                author: user.name
+            });
         });
     });
 });
@@ -98,5 +141,15 @@ router.delete('/:id', function(req, res) {
         res.send('Success');
     });
 });
+
+// Access control
+function ensureAuthenticated(req, res, next) {
+    if(req.isAuthenticated()){
+        return next();
+    } else {
+        req.flash('danger', 'Please Login');
+        res.redirect('/users/login');
+    }
+}
 
 module.exports = router;

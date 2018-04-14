@@ -5,11 +5,14 @@
      <div class="divider mb-4"></div>
 
      <h3 class="ml-4 mr-4">{{ post.body }}</h3>
-     <h5 class="ml-4 mr-4">Posted By: {{ post.author }}</h5>
+     <h5 class="ml-4 mr-4">Posted By: {{ author }}</h5>
 
 
-     <a href="/posts/edit/{{ post._id }}" class="btn btn-warning ml-4 mr-4">Edit Post</a>
-     <a href="#" data-id="{{ post._id }}" class="btn btn-danger delete-post">Delete</a>
+    {{#if postedBy}} 
+        <a href="/posts/edit/{{ post._id }}" class="btn btn-warning ml-4 mr-4">Edit Post</a>
+        <a href="#" data-id="{{ post._id }}" class="btn btn-danger delete-post">Delete</a>
+    {{/if}}
+
 
      <div class="divider mb-2 mt-4"></div>
 
