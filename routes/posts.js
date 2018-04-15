@@ -110,11 +110,12 @@ router.get('/:id', function(req, res) {
 // Edit Single Post --- TODO This route may need some work
 router.get('/edit/:id', ensureAuthenticated, function(req, res) {
     Post.findById(req.params.id, function (err, post) {
-        User.findById(post.author, function(err, user){
-            res.render('edit_post', {
-                post: post,
-                author: user.name
-            });
+        if(post.author != req.user._id) {
+            req.flash('danger', 'Not Authorized');
+            return res.redirect('/');
+        }
+        res.render('edit_post', {
+            post: post
         });
     });
 });
@@ -133,13 +134,24 @@ router.post('/edit/:id', function(req, res) {
 
 // Delete Post
 router.delete('/:id', function(req, res) {
+    if(!req.user._id){
+        res.status(500).send();
+    }
+
     let query = {_id:req.params.id}
-    Post.remove(query, function(err) {
-        if(err) {
-            console.log(err)
+
+    Post.findById(req.params.id, function(err, post){
+        if(post.author != req.user._id){
+            res.status(500).send();
+        } else {
+            Post.remove(query, function(err) {
+                if(err) {
+                    console.log(err)
+                }
+                res.send('Success');
+            });
         }
-        res.send('Success');
-    });
+    })
 });
 
 // Access control
