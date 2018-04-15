@@ -3,8 +3,11 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 
-//Bring in Post Model
+//Bring in User Model
 let User = require('../models/user');
+
+// Bring in Models
+let Post = require('../models/post')
 
 // Register Form
 router.get('/register', function(req, res) {
@@ -76,5 +79,24 @@ router.get('/logout', function(req, res) {
     req.flash('success', 'You are logged out');
     res.redirect('/users/login');
 });
+
+// View User Profile
+router.get('/profile/:id', function(req, res) {
+    let query = {_id:req.params.id}
+    Post.find({'_id': query}, function(err, posts) {
+        if(err){
+            console.log(err);
+        } else {
+            res.render('profile', {
+                posts: posts
+            });
+        }
+    });
+});
+
+// View User Profile -- Original test of working link
+// router.get('/profile/:id', function(req, res) {
+//     res.render('profile');
+// });
 
 module.exports = router;
