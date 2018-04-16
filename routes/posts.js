@@ -78,35 +78,6 @@ router.get('/:id', function(req, res) {
     });
 });
 
-// Get Single Post - Also keep safe while mess with above
-// router.get('/:id', function(req, res) {
-//     Post.findById(req.params.id, function (err, post) {
-//         User.findById(post.author, function(err, user){
-//             let postedBy = false
-//             if(req.user._id.toString() === user._id.toString()){
-//                 postedBy = true
-//             } 
-//             res.render('post', {
-//                 post: post,
-//                 author: user.username,
-//                 postedBy: postedBy
-//             });
-//         });
-//     });
-// });
-
-// Get Single Post -- Keep safe while I play with above
-// router.get('/:id', function(req, res) {
-//     Post.findById(req.params.id, function (err, post) {
-//         User.findById(post.author, function(err, user){
-//             res.render('post', {
-//                 post: post,
-//                 author: user.username
-//             });
-//         });
-//     });
-// });
-
 // Edit Single Post --- TODO This route may need some work
 router.get('/edit/:id', ensureAuthenticated, function(req, res) {
     Post.findById(req.params.id, function (err, post) {

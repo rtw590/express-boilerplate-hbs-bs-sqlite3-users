@@ -82,21 +82,20 @@ router.get('/logout', function(req, res) {
 
 // View User Profile
 router.get('/profile/:id', function(req, res) {
-    let query = {_id:req.params.id}
-    Post.find({'_id': query}, function(err, posts) {
-        if(err){
-            console.log(err);
-        } else {
-            res.render('profile', {
-                posts: posts
-            });
-        }
+    Post.find({'author': req.params.id}, function(err, posts) {
+        User.findById(req.params.id, function(err, user){
+            let profile = user.username
+            if(err){
+                console.log(err);
+            } else {
+                res.render('profile', {
+                    posts: posts,
+                    profile: profile
+                });
+            }
+        });
     });
 });
 
-// View User Profile -- Original test of working link
-// router.get('/profile/:id', function(req, res) {
-//     res.render('profile');
-// });
 
 module.exports = router;
