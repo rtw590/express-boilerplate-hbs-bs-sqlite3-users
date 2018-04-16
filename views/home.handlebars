@@ -2,8 +2,8 @@
     
     <div class="homeList">
         {{# each posts }}
-            <a href="/posts/{{ this._id }}"+>{{ this.title }}</a>
-            <br>
+            <a href="/posts/{{ this._id }}">{{ this.title }}</a>
+            <p class="ml-5">Posted by: <a href="/users/profile/{{ this.author }}" style="font-weight: 600; font-size: 18px;">{{ this.username }}</a></p>
             <div class="divider"></div>
         {{/each}}
     </div>

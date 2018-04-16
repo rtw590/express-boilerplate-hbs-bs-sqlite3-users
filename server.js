@@ -87,6 +87,7 @@ app.use(bodyParser.json())
 // Home Route
 app.get('/', function(req, res) {
     Post.find({}, function(err, posts) {
+    console.log(posts)
         if(err){
             console.log(err);
         } else {
@@ -96,6 +97,20 @@ app.get('/', function(req, res) {
         }
     });
 });
+
+// Home Route -- Keep Safe -- Above working on adding username posted by
+// app.get('/', function(req, res) {
+//     Post.find({}, function(err, posts) {
+//     console.log(posts)
+//         if(err){
+//             console.log(err);
+//         } else {
+//             res.render('home', {
+//                 posts: posts
+//             });
+//         }
+//     });
+// });
 
 // Route Files
 let posts = require('./routes/posts');

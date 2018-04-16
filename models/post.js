@@ -2,13 +2,15 @@ let mongoose = require('mongoose');
 
 // post Schema
 let commentSchema = mongoose.Schema({
-    title:{
-        type: String,
-        required: true
+    author:{
+        type: String
     },
     body:{
         type: String,
         required: true
+    },
+    username:{
+        type: String
     }
 });
 
@@ -24,6 +26,9 @@ let postSchema = mongoose.Schema({
     body:{
         type: String,
         required: true
+    },
+    username:{
+        type: String
     },
     comments: [commentSchema]
 });

@@ -19,7 +19,7 @@
     <form action="/posts/comment/{{ post._id }}" method="POST">
         <h1>Add A Comment</h1>
         <div class="form-group">
-            <label>Body:</label>
+            {{!-- <label>Body:</label> --}}
             <textarea name="body" style="width:100%;"></textarea>
         </div>
         <input type="submit" value="Submit" class="btn btn-warning">
@@ -30,7 +30,7 @@
      <ul class="commentsList">
         {{#each post.comments}}
             <li>{{ this.body }}</li>
-            <li class="ml-4 mb-1">Posted By: User</li>
+            <li class="ml-4 mb-1">Posted By: <a href="/users/profile/{{ this.author }}" style="font-weight: 700;">{{ this.username }}</a></li>
             <div class="divider"></div>
         {{/each}}
     </ul>

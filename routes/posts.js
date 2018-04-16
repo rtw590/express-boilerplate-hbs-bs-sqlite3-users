@@ -26,37 +26,74 @@ router.post('/add', function(req, res) {
             errors:errors
         });
     } else {
-        let post = new Post();
-        post.title = req.body.title;
-        post.author = req.user._id;
-        post.body = req.body.body;
+        User.findById(req.user._id, function(err, user){
+            let post = new Post();
+            post.title = req.body.title;
+            post.author = req.user._id;
+            post.body = req.body.body;
+            post.username = user.username;
 
-        post.save(function(err) {
-            if (err) {
-                console.log(err);
-                return;
-            } else {
-                req.flash('success', 'Post Added');
-                res.redirect('/');
-            }
+            post.save(function(err) {
+                if (err) {
+                    console.log(err);
+                    return;
+                } else {
+                    req.flash('success', 'Post Added');
+                    res.redirect('/');
+                }
+            });
         });
     }
 });
 
+// Add POST route for posts ------ Keep safe while working above
+// router.post('/add', function(req, res) {
+//     req.checkBody('title', 'Title is required').notEmpty();
+//     // req.checkBody('author', 'Author is required').notEmpty();
+//     req.checkBody('body', 'Body is required').notEmpty();
+
+//     // get errors
+
+//     let errors = req.validationErrors();
+
+//     if(errors) {
+//         res.render('add_post', {
+//             errors:errors
+//         });
+//     } else {
+//         let post = new Post();
+//         post.title = req.body.title;
+//         post.author = req.user._id;
+//         post.body = req.body.body;
+
+//         post.save(function(err) {
+//             if (err) {
+//                 console.log(err);
+//                 return;
+//             } else {
+//                 req.flash('success', 'Post Added');
+//                 res.redirect('/');
+//             }
+//         });
+//     }
+// });
+
 // Add POST route for commments
-router.post('/comment/:id', function(req, res) {
+router.post('/comment/:id', ensureAuthenticated, function(req, res) {
     Post.findById(req.params.id, function (err, post) {
-        post.comments.push({title: 'This needs to be User', body: req.body.body});
-        post.save(function(err) {
-            if (err) {
-                console.log(err);
-                return;
-            } else {
-                res.redirect('/posts/'+req.params.id);
-            }
+        User.findById(req.user._id, function(err, user){
+            console.log(user.username)
+            post.comments.push({author: req.user._id, body: req.body.body, username: user.username});
+            post.save(function(err) {
+                if (err) {
+                    console.log(err);
+                    return;
+                } else {
+                    res.redirect('/posts/'+req.params.id);
+                }
+            });
         });
     });
-
 });
 
 // Get Single Post
@@ -77,6 +114,25 @@ router.get('/:id', function(req, res) {
         });
     });
 });
+
+// Get Single Post -- Keep safe and works but I need a way to get commenters username
+// router.get('/:id', function(req, res) {
+//     Post.findById(req.params.id, function (err, post) {
+//         User.findById(post.author, function(err, user){
+//             let postedBy = false
+//             if(req.user != undefined) {
+//                 if(req.user._id.toString() === user._id.toString()){
+//                     postedBy = true
+//                 } 
+//             }
+//             res.render('post', {
+//                 post: post,
+//                 author: user.username,
+//                 postedBy: postedBy
+//             });
+//         });
+//     });
+// });
 
 // Edit Single Post --- TODO This route may need some work
 router.get('/edit/:id', ensureAuthenticated, function(req, res) {
