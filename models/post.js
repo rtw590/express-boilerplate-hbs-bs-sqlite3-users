@@ -30,6 +30,10 @@ let postSchema = mongoose.Schema({
     username:{
         type: String
     },
+    votes:{
+        type: Number
+    },
+    upvotedBy:[],
     comments: [commentSchema]
 });
 

@@ -32,6 +32,8 @@ router.post('/add', function(req, res) {
             post.author = req.user._id;
             post.body = req.body.body;
             post.username = user.username;
+            post.upvotedBy = [req.user._id.toString()];
+            post.votes = 1;
 
             post.save(function(err) {
                 if (err) {
@@ -146,6 +148,38 @@ router.get('/edit/:id', ensureAuthenticated, function(req, res) {
         });
     });
 });
+
+// Upvote a Post
+router.get('/upvote/:id', ensureAuthenticated, function(req, res) {
+    Post.findById(req.params.id, function (err, post) {
+        if(post.upvotedBy.includes(req.user._id.toString())){
+            req.flash('success', 'Only One Upvote Per Post');
+            res.redirect('/');
+        } else {
+            post.upvotedBy.push(req.user._id.toString());
+            post.votes += 1;
+            post.save();
+            req.flash('success', 'Post Upvoted');
+            res.redirect('/');
+        }
+    });
+});
+
+// Upvote a Post ---- Keep safe while playing with above
+// router.get('/upvote/:id', ensureAuthenticated, function(req, res) {
+//     Post.findById(req.params.id, function (err, post) {
+//         console.log(post);
+//         console.log(req.user._id);
+//         if(post.upvotedBy.includes(req.user._id.toString())){
+//             console.log('it does include');
+//         }
+//         post.upvotedBy.push(req.user._id.toString());
+//         post.votes += 1;
+//         post.save();
+//     });
+//     req.flash('success', 'Post Upvoted');
+//     res.redirect('/');
+// });
 
 //  POST to update posts
 router.post('/edit/:id', function(req, res) {

@@ -15,3 +15,12 @@ $(document).ready(function(){
         });
     });
 });
+
+
+// $(document).ready(function(){
+//     $('.upvote-post').on('click', function(e){
+//         $target = $(e.target);
+//         const id = $target.attr('data-id');
+//         console.log('Clicked')
+//     });
+// });
