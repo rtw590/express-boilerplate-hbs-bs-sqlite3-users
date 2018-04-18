@@ -21,9 +21,14 @@ router.post('/add', function(req, res) {
 
     let errors = req.validationErrors();
 
+    let title = req.body.title
+    let body = req.body.body
+
     if(errors) {
         res.render('add_post', {
-            errors:errors
+            errors:errors,
+            body:body,
+            title:title
         });
     } else {
         User.findById(req.user._id, function(err, user){
@@ -161,6 +166,22 @@ router.get('/upvote/:id', ensureAuthenticated, function(req, res) {
             post.save();
             req.flash('success', 'Post Upvoted');
             res.redirect('/');
+        }
+    });
+});
+
+// Upvote a Post While on specific page
+router.get('/upvote/post/:id', ensureAuthenticated, function(req, res) {
+    Post.findById(req.params.id, function (err, post) {
+        if(post.upvotedBy.includes(req.user._id.toString())){
+            req.flash('success', 'Only One Upvote Per Post');
+            res.redirect('/posts/'+req.params.id);
+        } else {
+            post.upvotedBy.push(req.user._id.toString());
+            post.votes += 1;
+            post.save();
+            req.flash('success', 'Post Upvoted');
+            res.redirect('/posts/'+req.params.id);
         }
     });
 });
