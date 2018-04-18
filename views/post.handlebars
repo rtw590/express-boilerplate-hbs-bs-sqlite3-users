@@ -16,14 +16,20 @@
 
      <div class="divider mb-2 mt-4"></div>
 
-    <form action="/posts/comment/{{ post._id }}" method="POST">
-        <h1>Add A Comment</h1>
-        <div class="form-group">
-            {{!-- <label>Body:</label> --}}
-            <textarea name="body" style="width:100%;"></textarea>
-        </div>
-        <input type="submit" value="Submit" class="btn btn-warning">
-     </form>
+     {{#if user}} 
+            <form action="/posts/comment/{{ post._id }}" method="POST">
+                <h1>Add A Comment</h1>
+                <div class="form-group">
+                    {{!-- <label>Body:</label> --}}
+                    <textarea name="body" style="width:100%;"></textarea>
+                </div>
+                <input type="submit" value="Submit" class="btn btn-warning">
+            </form>
+        {{else}} 
+            <p class="ml-2"><a href="/users/login">Login</a> to Leave a Comment</p>
+
+            <div class="divider"></div>
+    {{/if}}
 
      <h1>Comments</h1>
 

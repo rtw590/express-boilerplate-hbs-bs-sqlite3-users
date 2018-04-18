@@ -183,15 +183,45 @@ router.get('/upvote/:id', ensureAuthenticated, function(req, res) {
 
 //  POST to update posts
 router.post('/edit/:id', function(req, res) {
-    Post.findById(req.params.id, function (err, post) {
-        post.title = req.body.title;
-        post.author = req.body.author;
-        post.body = req.body.body;
-        post.save();
-    });
-    req.flash('success', 'Post Updated');
-    res.redirect('/posts/'+req.params.id);
+    req.checkBody('title', 'Title is required').notEmpty();
+    req.checkBody('body', 'Body is required').notEmpty();
+
+    // get errors
+
+    let errors = req.validationErrors();
+
+    if(errors) {
+        Post.findById(req.params.id, function (err, post) {
+            if(post.author != req.user._id) {
+                req.flash('danger', 'Not Authorized');
+                return res.redirect('/');
+            }
+            res.render('edit_post', {
+                post: post,
+                errors: errors
+            });
+        });
+    } else {
+        Post.findById(req.params.id, function (err, post) {
+            post.title = req.body.title;
+            post.body = req.body.body;
+            post.save();
+        });
+        req.flash('success', 'Post Updated');
+        res.redirect('/posts/'+req.params.id);
+    }
 });
+
+//  POST to update posts -- Keep safe while playing above
+// router.post('/edit/:id', function(req, res) {
+//     Post.findById(req.params.id, function (err, post) {
+//         post.title = req.body.title;
+//         post.body = req.body.body;
+//         post.save();
+//     });
+//     req.flash('success', 'Post Updated');
+//     res.redirect('/posts/'+req.params.id);
+// });
 
 // Delete Post
 router.delete('/:id', function(req, res) {
