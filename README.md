@@ -4,3 +4,4 @@ Includes
     - bootstrap 
     - mongo 
     - user creation and login
+    - flash messaging
