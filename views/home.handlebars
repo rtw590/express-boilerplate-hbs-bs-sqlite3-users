@@ -1,38 +1,7 @@
  <div class="container">
     
-    <div class="homeList">
-        {{# each posts }}
-            <div class="row">
-                <div class="col-3">
-                    <a href="/posts/upvote/{{ this._id }}" class="btn btn-warning btn-sm mt-2 mb-2" style="height: 40px; vertical-align:middle; padding-left:12px; padding-right:12px; line-height: 25px;">+</a>
-                    <button type="button" class="btn btn-warning mt-2 mb-2" style="height: auto;">
-                        <span class="badge badge-light">{{ this.votes }}</span>
-                    </button>
-                </div>
-                <div class="col-9">
-                    <a href="/posts/{{ this._id }}">{{ this.title }}</a>
-                    <p class="ml-5">Posted by: <a href="/users/profile/{{ this.author }}" style="font-weight: 600; font-size: 18px;">{{ this.username }}</a></p>
-                </div>
-            </div>
-            <div class="divider"></div>
-        {{/each}}
-    </div>
+    <h1>Homepage</h1>
 
 </div>
 
 
- {{!-- <div class="container">
-    
-    <div class="homeList">
-        {{# each posts }}
-            <a href="/posts/upvote/{{ this._id }}" class="btn btn-warning">+</a>
-            <button type="button" class="btn btn-warning" style="height: 100%;">
-                  <span class="badge badge-light">{{ this.votes }}</span>
-            </button>
-            <a href="/posts/{{ this._id }}">{{ this.title }}</a>
-            <p class="ml-5">Posted by: <a href="/users/profile/{{ this.author }}" style="font-weight: 600; font-size: 18px;">{{ this.username }}</a></p>
-            <div class="divider"></div>
-        {{/each}}
-    </div>
-
-</div> --}}

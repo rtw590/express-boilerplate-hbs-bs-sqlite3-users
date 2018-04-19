@@ -9,6 +9,8 @@ const session = require('express-session');
 const passport = require('passport');
 const config = require('./config/database');
 
+
+// Don't forget to change database fle to change the database placeholder
 mongoose.connect(config.database);
 let db = mongoose.connection;
 
@@ -25,8 +27,6 @@ db.on('error', function(err) {
 // Init the app
 const app = express();
 
-// Bring in Models
-let Post = require('./models/post')
 
 app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
@@ -85,39 +85,14 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 // Home Route
-app.get('/', function(req, res) {
-    Post.find({}, null, {sort: '-votes'}, function(err, posts) {
-        if(err){
-            console.log(err);
-        } else {
-            res.render('home', {
-                posts: posts
-            });
-        }
-    });
-});
-
-// Home Route -- Keep Safe --
-app.get('/', function(req, res) {
-    Post.find({}, function(err, posts) {
-        if(err){
-            console.log(err);
-        } else {
-            res.render('home', {
-                posts: posts
-            });
-        }
-    });
+// Set home route
+app.get('/', function(req, res){
+    res.render('home');
 });
 
 // Route Files
-let posts = require('./routes/posts');
 let users = require('./routes/users');
-app.use('/posts', posts);
 app.use('/users', users);
-
-// var tutorials = require('./routes/tutorials');
-// app.use('/tutorials', tutorials);
 
 app.set('port', (process.env.PORT || 8000));
 

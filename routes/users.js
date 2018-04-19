@@ -6,9 +6,6 @@ const passport = require('passport');
 //Bring in User Model
 let User = require('../models/user');
 
-// Bring in Models
-let Post = require('../models/post')
-
 // Register Form
 router.get('/register', function(req, res) {
     res.render('register');
@@ -78,23 +75,6 @@ router.get('/logout', function(req, res) {
     req.logout();
     req.flash('success', 'You are logged out');
     res.redirect('/users/login');
-});
-
-// View User Profile
-router.get('/profile/:id', function(req, res) {
-    Post.find({'author': req.params.id}, function(err, posts) {
-        User.findById(req.params.id, function(err, user){
-            let profile = user.username
-            if(err){
-                console.log(err);
-            } else {
-                res.render('profile', {
-                    posts: posts,
-                    profile: profile
-                });
-            }
-        });
-    });
 });
 
 
