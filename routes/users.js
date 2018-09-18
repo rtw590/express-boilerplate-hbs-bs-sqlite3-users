@@ -44,15 +44,14 @@ router.post("/register", function(req, res) {
           console.log(err);
         }
         newUser.password = hash;
-        newUser.save(function(err) {
-          if (err) {
-            console.log(err);
-            return;
-          } else {
-            req.flash("success", "You are now registered");
-            res.redirect("/users/login");
-          }
+        console.log("this ran before save");
+        User.create({
+          username: newUser.username,
+          email: newUser.email,
+          password: newUser.password
         });
+        console.log("this ran after save");
+        res.redirect("/users/login");
       });
     });
   }
